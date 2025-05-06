@@ -1,9 +1,9 @@
 import "../pages/index.css";
 import { initialCards } from "./cards.js";
-import { removeCard } from "./cards.js";
+import { removeCard } from "./card.js";
 import { openModal } from "../scripts/modal.js";
 import { closeModal } from "../scripts/modal.js";
-import { addCard } from "./cards.js";
+import { createCard } from "./card.js";
 import { closeModalOverlayListener } from "./modal.js";
 
 // создаю переменные, которые будут находить нужные классы
@@ -32,7 +32,7 @@ export const cardContainer = document.querySelector(".places__list");
 
 // создаёт карточки из списка initialCards и добавляет их в контейнер на странице.
 initialCards.forEach((cardData) => {
-  const cardElement = addCard(
+  const cardElement = createCard(
     cardData,
     removeCard,
     imageModalClick,
@@ -138,13 +138,13 @@ export function handleFormSubmitPlace(evt) {
   };
 
   // Создаю карточку и добавляю ее в контейнер
-  const createCard = addCard(
+  const addCard = createCard(
     cardData,
     removeCard,
     imageModalClick,
     cardTemplate
   );
-  cardContainer.prepend(createCard);
+  cardContainer.prepend(addCard);
 
   // Закрываю модальное окно и Очищаю форму
   closeModal(popupTypeNewCard);
@@ -154,4 +154,6 @@ export function handleFormSubmitPlace(evt) {
 formElementCard.addEventListener("submit", handleFormSubmitPlace);
 
 // вызовы закрытия
-closeModalOverlayListener(allPopups);
+allPopups.forEach((popup) => {
+  popup.addEventListener("click", closeModalOverlayListener);
+});
