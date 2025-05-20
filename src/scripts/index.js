@@ -5,21 +5,17 @@ import { openModal } from "../scripts/modal.js";
 import { closeModal } from "../scripts/modal.js";
 import { createCard } from "./card.js";
 import { closeModalOverlayListener } from "./modal.js";
+import { enableValidation } from "./validation.js"
+import { clearValidation } from "./validation.js"
 
 // создаю переменные, которые будут находить нужные классы
 const profileEditButton = document.querySelector(".profile__edit-button");
 const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 const profileAddButton = document.querySelector(".profile__add-button");
-const closePopupTypeEdit = document.querySelector(
-  ".popup_type_edit .popup__close"
-);
-const closePopupTypeNewCard = document.querySelector(
-  ".popup_type_new-card .popup__close"
-);
+const closePopupTypeEdit = document.querySelector(".popup_type_edit .popup__close");
+const closePopupTypeNewCard = document.querySelector(".popup_type_new-card .popup__close");
 const popupTypeImage = document.querySelector(".popup_type_image");
-const closePopupTypeImage = document.querySelector(
-  ".popup_type_image .popup__close"
-);
+const closePopupTypeImage = document.querySelector(".popup_type_image .popup__close");
 const allPopups = document.querySelectorAll(".popup");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
@@ -157,3 +153,16 @@ formElementCard.addEventListener("submit", handleFormSubmitPlace);
 allPopups.forEach((popup) => {
   popup.addEventListener("click", closeModalOverlayListener);
 });
+
+const validationConfig = {
+  formSelector: '.popup__form', 
+  inputSelector: '.popup__input', 
+  submitButtonSelector: '.popup__button', 
+  inactiveButtonClass: 'popup__button_disabled', 
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible' 
+}; 
+
+// вызываю функцию
+enableValidation(validationConfig);
+clearValidation(editProfileForm, validationConfig); 
