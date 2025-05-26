@@ -112,11 +112,11 @@ export const clearValidation = (formElement, settings) => {
     const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
     const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
-    inputList.forEach((inputElement) => {
+    inputList.forEach((inputElement, settings) => {
         hideInputError(formElement, inputElement, settings);
-    });
 
-    buttonElement.classList.add(settings.inactiveButtonClass);
-    buttonElement.disabled = true;
+        buttonElement.classList.add(settings.inactiveButtonClass);
+        buttonElement.disabled = true;
+    });
 };
 

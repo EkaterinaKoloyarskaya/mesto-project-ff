@@ -1,5 +1,0 @@
-/* inputErrorClass - меняем цвет рамки */
-
-.popup__input_type_error {
-border-bottom: 1px solid red;
-}

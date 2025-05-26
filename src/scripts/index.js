@@ -20,8 +20,12 @@ const allPopups = document.querySelectorAll(".popup");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
+
+
+
 // получаем содержимое template
 export const cardTemplate = document.querySelector("#card-template").content;
+
 
 // ищем в документе блок с классом places__list
 export const cardContainer = document.querySelector(".places__list");
@@ -55,6 +59,7 @@ profileEditButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   openModal(editProfileForm);
+  clearValidation(profileEditButton, validationConfig);
 });
 
 // клик по плюсику
@@ -87,6 +92,7 @@ const nameInput = formElementEdit.querySelector(".popup__input_type_name");
 const jobInput = formElementEdit.querySelector(
   ".popup__input_type_description"
 );
+
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -131,6 +137,7 @@ export function handleFormSubmitPlace(evt) {
   const cardData = {
     name: placeInput.value,
     link: linkImageInput.value,
+    
   };
 
   // Создаю карточку и добавляю ее в контейнер
@@ -145,6 +152,8 @@ export function handleFormSubmitPlace(evt) {
   // Закрываю модальное окно и Очищаю форму
   closeModal(popupTypeNewCard);
   formElementCard.reset();
+clearValidation(popupTypeNewCard, validationConfig);
+  
 }
 // Прикрепляю обработчик к форме: // он будет следить за событием “submit” - «отправка»
 formElementCard.addEventListener("submit", handleFormSubmitPlace);
@@ -165,4 +174,6 @@ const validationConfig = {
 
 // вызываю функцию
 enableValidation(validationConfig);
-clearValidation(editProfileForm, validationConfig); 
+// clearValidation(formSelector, validationConfig); 
+
+
