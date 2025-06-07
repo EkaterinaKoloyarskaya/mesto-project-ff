@@ -20,3 +20,17 @@
     margin-right: 0;
   }
 }
+
+.profile__image:hover::after {
+  content: ''; 
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5) url('../../../images/edit-icon.svg') center no-repeat;
+  background-size: 24px 24px;
+  border-radius: 50%;
+  width: 120px;
+  margin: 0 29px 0 0;
+  height: 120px;
+  background-position: 50%;
+  cursor: pointer;
+}
+
