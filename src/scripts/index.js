@@ -73,11 +73,12 @@ profileEditButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   openModal(editProfileForm);
-  clearValidation(profileEditButton, validationConfig);
+  clearValidation(editProfileForm, validationConfig);
 });
 
 // клик по плюсику
 profileAddButton.addEventListener("click", () => {
+  clearValidation(popupTypeNewCard, validationConfig);
   openModal(popupTypeNewCard);
 });
 
@@ -253,9 +254,9 @@ export function handleFormSubmitPlace(evt) {
 formElementCard.addEventListener("submit", handleFormSubmitPlace);
 
 // вызовы закрытия
-// allPopups.forEach((popup) => {
-//   popup.addEventListener("click", closeModalOverlayListener);
-// });
+allPopups.forEach((popup) => {
+  popup.addEventListener("click", closeModalOverlayListener);
+});
 
 const validationConfig = {
   formSelector: ".popup__form",

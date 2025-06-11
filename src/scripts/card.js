@@ -44,10 +44,6 @@ export function createCard(
     return likesArray.some((user) => user._id === userId);
   };
 
-  console.log("userId:", userId);
-  console.log("likes array:", cardData.likes);
-  console.log("is user liked?", isLikeUser(cardData.likes));
-
   // Устанавливаем активный лайк при создании карточки
   if (isLikeUser(cardData.likes)) {
     likeButton.classList.add("card__like-button_is-active");
@@ -82,7 +78,6 @@ export function createCard(
         } else {
           likeButton.classList.remove("card__like-button_is-active");
         }
-        likeCounterElement.textContent = updatedCardData.likes.length;
       })
       .catch((err) => {
         console.log("Ошибка при обновлении данных", err);

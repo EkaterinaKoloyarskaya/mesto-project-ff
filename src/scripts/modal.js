@@ -24,6 +24,8 @@ export const closeEsc = (evt) => {
 
 // функция-обработчик события клика по оверлею;
 export const closeModalOverlayListener = (evt) => {
+  console.log('click target:', evt.target);
+  console.log('currentTarget:', evt.currentTarget);
   if (evt.target === evt.currentTarget) {
     closeModal(evt.currentTarget);
   }

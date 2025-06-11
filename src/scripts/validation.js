@@ -1,11 +1,11 @@
 // Главная фунция, найдет на странице и обработает все формы, передаю в нее объект настроек классов  селекторов
-export const enableValidation = (settings) => {
+export const enableValidation = (config) => {
   // // Нахожу все формы с классом и делаю из них массив методом Array.from
-  const forms = Array.from(document.querySelectorAll(settings.formSelector));
+  const forms = Array.from(document.querySelectorAll(config.formSelector));
 
   // методом forEach перебираю формы и вызываю на них функцию setEventListeners, кот отслеживает ввод каждого символа в input
   forms.forEach((form) => {
-    setEventListeners(form, settings);
+    setEventListeners(form, config);
   });
 };
 
@@ -41,31 +41,31 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 };
 
 // 	Показывает ошибку (подсказка и красная рамка)
-const showInputError = (formElement, inputElement, errorMessage, settings) => {
+const showInputError = (formElement, inputElement, errorMessage, config) => {
   // Ищем поле ввода для ошибки
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
   // рамка меняет цвет
-  inputElement.classList.add(settings.inputErrorClass);
+  inputElement.classList.add(config.inputErrorClass);
   // Заменим содержимое span с ошибкой на переданный параметр
   errorElement.textContent = errorMessage;
   // Показываем сообщение об ошибке
-  errorElement.classList.add(settings.errorClass);
+  errorElement.classList.add(config.errorClass);
 };
 
 // 	Скрывает ошибку
-const hideInputError = (formElement, inputElement, settings) => {
+const hideInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
-  inputElement.classList.remove(settings.inputErrorClass);
+  inputElement.classList.remove(config.inputErrorClass);
   // Очищаем ошибку
   errorElement.textContent = "";
   // Скрываем сообщение об ошибке
-  errorElement.classList.remove(settings.errorClass);
+  errorElement.classList.remove(config.errorClass);
 };
 
 // Проверяет одно поле на валидность и вызывает showInputError или hideInputError
-const isValid = (formElement, inputElement, settings) => {
+const isValid = (formElement, inputElement, config) => {
   // Проверяю введен ли текст, соответствующий pattern
   if (inputElement.validity.patternMismatch) {
     // Если pattern === true, не соттветствует, задаю свое сообщение об ошибке
@@ -82,51 +82,51 @@ const isValid = (formElement, inputElement, settings) => {
       formElement,
       inputElement,
       inputElement.validationMessage,
-      settings
+      config
     );
   } else {
     // Если поле проходит валидацию, то скроем ошибку; hideInputError олучает форму, в кот
     // находится проверяемое поле, и само поле
-    hideInputError(formElement, inputElement, settings);
+    hideInputError(formElement, inputElement, config);
   }
 };
 
 // 	Вешает слушатели на инпуты внутри конкретной формы
-const setEventListeners = (formElement, settings) => {
+const setEventListeners = (formElement, config) => {
   // Находим все поля внутри формы и сделаем из них массив методом Array.from
   const inputList = Array.from(
-    formElement.querySelectorAll(settings.inputSelector)
+    formElement.querySelectorAll(config.inputSelector)
   );
   const buttonElement = formElement.querySelector(
-    settings.submitButtonSelector
+    config.submitButtonSelector
   );
 
-  toggleButtonState(inputList, buttonElement, settings);
+  toggleButtonState(inputList, buttonElement, config);
 
   // Обойдем все элементы методом forEach
   inputList.forEach((inputElement) => {
     // Каждому полю добавим обработчик события
     inputElement.addEventListener("input", () => {
       // Внутри коллбэка вызовем isValid, передав ей форму и проверяемый элемент
-      isValid(formElement, inputElement, settings);
-      toggleButtonState(inputList, buttonElement, settings);
+      isValid(formElement, inputElement, config);
+      toggleButtonState(inputList, buttonElement, config);
     });
   });
 };
 
 // При повторном открытии формы убирает все ошибки и деактивирует кнопку
-export const clearValidation = (formElement, settings) => {
+export const clearValidation = (formElement, config) => {
   const inputList = Array.from(
-    formElement.querySelectorAll(settings.inputSelector)
+    formElement.querySelectorAll(config.inputSelector)
   );
   const buttonElement = formElement.querySelector(
-    settings.submitButtonSelector
+    config.submitButtonSelector
   );
 
-  inputList.forEach((inputElement, settings) => {
-    hideInputError(formElement, inputElement, settings);
+  inputList.forEach((inputElement, config) => {
+    hideInputError(formElement, inputElement, config);
 
-    buttonElement.classList.add(settings.inactiveButtonClass);
-    buttonElement.disabled = true;
+    disableSubmitButton(buttonElement, config);
   });
+  
 };
