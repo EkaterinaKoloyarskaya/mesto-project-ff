@@ -1,5 +1,4 @@
 import "../pages/index.css";
-import { initialCards } from "./cards.js";
 import { removeCard } from "./card.js";
 import { openModal } from "../scripts/modal.js";
 import { closeModal } from "../scripts/modal.js";
@@ -14,6 +13,7 @@ import { editProfileUser } from "./api.js";
 import { addNewCard } from "./api.js";
 import { deleteCardLike, addCardLike } from "./api.js";
 import { editAvatarUser } from "./api.js";
+// import { setModalWindowEventListeners } from "./modal.js";
 
 // создаю переменные, которые будут находить нужные классы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -44,6 +44,9 @@ const saveButtonCard = document.querySelector(
 );
 const saveButtonEditProfile = document.querySelector(
   ".popup_type_edit .popup__button"
+);
+const popupInputTypeUrl = document.querySelector(
+  ".popup__input_type_avatar_url"
 );
 
 // получаем содержимое template
@@ -78,22 +81,22 @@ profileAddButton.addEventListener("click", () => {
   openModal(popupTypeNewCard);
 });
 
-// клик по крестику закрытия у модал окна на кнопку редактирования
+// // клик по крестику закрытия у модал окна на кнопку редактирования
 closePopupTypeEdit.addEventListener("click", () => {
   closeModal(editProfileForm);
 });
 
-// клик по крестику закрытия у модал окна +
+// // клик по крестику закрытия у модал окна +
 closePopupTypeNewCard.addEventListener("click", () => {
   closeModal(popupTypeNewCard);
 });
 
-// клик по крестику закрытия у модал окна картинок
+// // клик по крестику закрытия у модал окна картинок
 closePopupTypeImage.addEventListener("click", () => {
   closeModal(popupTypeImage);
 });
 
-// клик по крестику закрытия у аватара
+// // клик по крестику закрытия у аватара
 closePopupNewAvatar.addEventListener("click", () => {
   closeModal(popupNewAvatar);
 });
@@ -162,7 +165,7 @@ const avatarElementEdit = popupNewAvatar.querySelector(".popup__form");
 
 // Нахожу поля формы в DOM
 const avatarLinkInput = avatarElementEdit.querySelector(
-  ".popup__input_type_url"
+  ".popup__input_type_avatar_url"
 );
 const profileImage = document.querySelector(".profile__image");
 
@@ -208,6 +211,7 @@ const placeInput = formElementCard.querySelector(
 );
 
 const linkImageInput = formElementCard.querySelector(".popup__input_type_url");
+console.log(formElementCard);
 
 // Обработчик «отправки» формы, хотя пока // она никуда отправляться не будет
 export function handleFormSubmitPlace(evt) {
@@ -249,9 +253,9 @@ export function handleFormSubmitPlace(evt) {
 formElementCard.addEventListener("submit", handleFormSubmitPlace);
 
 // вызовы закрытия
-allPopups.forEach((popup) => {
-  popup.addEventListener("click", closeModalOverlayListener);
-});
+// allPopups.forEach((popup) => {
+//   popup.addEventListener("click", closeModalOverlayListener);
+// });
 
 const validationConfig = {
   formSelector: ".popup__form",
@@ -271,6 +275,11 @@ Promise.all([loadUserInformation(), loadCardsUsers()])
 
   .then(([userData, cardsData]) => {
     userId = userData._id;
+
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileImage.style.backgroundImage = `url(${userData.avatar})`;
+    popupInputTypeUrl.value = userData.avatar;
 
     cardsData.forEach((cardData) => {
       const cardElement = createCard(

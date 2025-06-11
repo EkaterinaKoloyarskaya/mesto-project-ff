@@ -1,7 +1,3 @@
-// в файле validation.js описаны функции для валидации форм.
-//  Из файла экспортируется только функция активации валидации enableValidation
-//  и функция очистки ошибок валидации clearValidation;
-
 // Главная фунция, найдет на странице и обработает все формы, передаю в нее объект настроек классов  селекторов
 export const enableValidation = (settings) => {
   // // Нахожу все формы с классом и делаю из них массив методом Array.from
@@ -23,16 +19,24 @@ const hasInvalidInput = (inputList) => {
   });
 };
 
+const disableSubmitButton = (buttonElement, config) => {
+  // Деактивация кнопки
+  buttonElement.disabled = true;
+  buttonElement.classList.add(config.inactiveButtonClass);
+};
+
+const enableSubmitButton = (buttonElement, config) => {
+  // Активация кнопки
+  buttonElement.disabled = false;
+  buttonElement.classList.remove(config.inactiveButtonClass);
+};
+
 // Включает или выключает кнопку отправки формы в зависимости от валидности всех полей.
-const toggleButtonState = (inputList, buttonElement, settings) => {
+const toggleButtonState = (inputList, buttonElement, config) => {
   if (hasInvalidInput(inputList)) {
-    // сделай кнопку неактивной
-    buttonElement.disabled = true;
-    buttonElement.classList.add(settings.inactiveButtonClass);
+    disableSubmitButton(buttonElement, config);
   } else {
-    // Иначе сделай активной
-    buttonElement.disabled = false;
-    buttonElement.classList.remove(settings.inactiveButtonClass);
+    enableSubmitButton(buttonElement, config);
   }
 };
 

@@ -1,4 +1,5 @@
 import { deleteCardLike, addCardLike } from "./api.js";
+import { deleteCardFromServer } from "./api.js";
 
 export function createCard(
   cardData,
@@ -26,19 +27,32 @@ export function createCard(
   if (cardData.owner._id !== userId) {
     cardDeleteButton.remove();
   } else {
-    cardDeleteButton.addEventListener("click", () =>
-      removeCardCallback(cardElement)
-    );
+    cardDeleteButton.addEventListener("click", () => {
+      deleteCardFromServer(cardData._id)
+        .then(() => {
+          // удалить карточку из DOM
+          removeCardCallback(cardElement);
+        })
+        .catch((err) => {
+          console.log("Ошибка при удалении карточки", err);
+        });
+    });
   }
 
   // Проверить поставил ли лайк текущий пользователь
   const isLikeUser = (likesArray) => {
-    return likesArray.some((user) => user.id === userId);
+    return likesArray.some((user) => user._id === userId);
   };
+
+  console.log("userId:", userId);
+  console.log("likes array:", cardData.likes);
+  console.log("is user liked?", isLikeUser(cardData.likes));
 
   // Устанавливаем активный лайк при создании карточки
   if (isLikeUser(cardData.likes)) {
     likeButton.classList.add("card__like-button_is-active");
+  } else {
+    likeButton.classList.remove("card__like-button_is-active");
   }
 
   // Установка счётчика лайков
@@ -49,12 +63,12 @@ export function createCard(
     imageModalClick(cardData.link, cardData.name)
   );
 
-  // Обработать лайкb
+  // Обработать лайка
   likeButton.addEventListener("click", () => {
-    console.log("Клик по лайку!");
     const isLiked = likeButton.classList.contains(
       "card__like-button_is-active"
     );
+
     const method = isLiked ? deleteCardLike : addCardLike;
 
     method(cardData._id)
@@ -65,8 +79,10 @@ export function createCard(
         // обновить счетчик лайков
         if (likeCounterElement) {
           likeCounterElement.textContent = updatedCardData.likes.length;
+        } else {
+          likeButton.classList.remove("card__like-button_is-active");
         }
-        console.log(`Лайков у карточки: ${updatedCardData.likes.length}`);
+        likeCounterElement.textContent = updatedCardData.likes.length;
       })
       .catch((err) => {
         console.log("Ошибка при обновлении данных", err);
@@ -79,8 +95,3 @@ export function createCard(
 export function removeCard(cardElement) {
   cardElement.remove();
 }
-
-// функция для лайка крточки(сердце активно)
-// export function cardLikeButton(likeButton) {
-//   likeButton.classList.toggle("card__like-button_is-active");
-// }
