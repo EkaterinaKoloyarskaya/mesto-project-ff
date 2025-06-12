@@ -78,6 +78,7 @@ profileEditButton.addEventListener("click", () => {
 
 // клик по плюсику
 profileAddButton.addEventListener("click", () => {
+  formElementCard.reset();
   clearValidation(popupTypeNewCard, validationConfig);
   openModal(popupTypeNewCard);
 });
